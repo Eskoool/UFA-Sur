@@ -2,7 +2,7 @@
  * Componente para importar el Documento Maestro
  */
 
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { procesarDocumentoMaestro, crearHistoricoImportacion } from '../services/documentoMaestro';
 import type { Medicamento, HistoricoItem } from '../types';
 
