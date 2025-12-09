@@ -124,6 +124,11 @@ export const GestionInventario: React.FC<Props> = ({
                     <span className="codigo">{medicamento.codigo}</span>
                     <span className="upe">UPE: {medicamento.upe}</span>
                   </div>
+                  {medicamento.existencia !== undefined && (
+                    <div style={{ fontSize: '0.75rem', color: '#666', marginTop: '0.25rem' }}>
+                      📦 Stock maestro: {medicamento.existencia}
+                    </div>
+                  )}
                   {hasInventarios && lastInventario && (
                     <div className="last-inventario">
                       Último: {new Date(lastInventario.fecha).toLocaleDateString('es-ES')}
@@ -148,9 +153,11 @@ export const GestionInventario: React.FC<Props> = ({
                 <button
                   className="btn btn-primary"
                   onClick={() => {
+                    // Pre-rellenar el campo teórico con la existencia del documento maestro
+                    const existenciaInicial = selectedMedicamento.existencia?.toString() ?? '';
                     setFormData({
                       fecha: getLastMonday(),
-                      teorico: '',
+                      teorico: existenciaInicial,
                       real: '',
                       notas: '',
                     });
@@ -176,14 +183,21 @@ export const GestionInventario: React.FC<Props> = ({
                     </div>
 
                     <div className="form-group">
-                      <label>Stock Teórico *</label>
+                      <label>
+                        Stock Teórico *
+                        {selectedMedicamento.existencia !== undefined && (
+                          <span style={{ fontSize: '0.8em', color: '#666', marginLeft: '8px' }}>
+                            📦 (Del maestro: {selectedMedicamento.existencia})
+                          </span>
+                        )}
+                      </label>
                       <input
                         type="number"
                         required
                         min="0"
                         value={formData.teorico}
                         onChange={(e) => setFormData({ ...formData, teorico: e.target.value })}
-                        placeholder="Cantidad esperada"
+                        placeholder="Cantidad esperada en sistema"
                       />
                     </div>
 

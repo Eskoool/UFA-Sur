@@ -46,13 +46,6 @@ export const PrevisionNecesidades: React.FC<Props> = ({
     setEditingCell(null);
   };
 
-  const calcularPtePreparar = (medicamento: Medicamento, semana: Semana): number => {
-    const prevision = getPrevision(medicamento.id, semana.id);
-    // Lógica: si total es negativo, necesitamos preparar la diferencia
-    // Si es positivo, tenemos stock suficiente
-    return Math.max(0, -prevision.total);
-  };
-
   const filteredMedicamentos = medicamentos.filter((med) =>
     med.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) ||
     med.codigo.toLowerCase().includes(searchTerm.toLowerCase())
@@ -101,6 +94,8 @@ export const PrevisionNecesidades: React.FC<Props> = ({
               <th rowSpan={2}>UPE</th>
               <th rowSpan={2}>Nevera</th>
               <th rowSpan={2}>Código</th>
+              <th rowSpan={2} title="Stock actual del documento maestro">📦 Stock</th>
+              <th rowSpan={2} title="Unidades pendientes de pedido">🔄 Pte Pedido</th>
               {semanasVisibles.map((semana) => (
                 <th key={semana.id} colSpan={5} className="semana-header">
                   {semana.nombre}
@@ -126,10 +121,17 @@ export const PrevisionNecesidades: React.FC<Props> = ({
                 <td>{medicamento.upe}</td>
                 <td>{medicamento.nevera ? '❄️' : '-'}</td>
                 <td>{medicamento.codigo}</td>
+                <td className="stock-info">{medicamento.existencia ?? '-'}</td>
+                <td className="stock-info">{medicamento.ud_pte_cons ?? '-'}</td>
                 {semanasVisibles.map((semana) => {
                   const prevision = getPrevision(medicamento.id, semana.id);
-                  const ptePreparar = calcularPtePreparar(medicamento, semana);
-                  const needsStock = prevision.total < 0;
+                  // Calcular el stock disponible: existencia actual + pendiente pedido - consumo previsto
+                  const stockActual = (medicamento.existencia ?? 0);
+                  const ptePedido = (medicamento.ud_pte_cons ?? 0);
+                  const consumoPrevisto = prevision.xsfar1 + prevision.xsfar;
+                  const totalConStock = stockActual + ptePedido - consumoPrevisto;
+                  const ptePreparar = Math.max(0, -totalConStock);
+                  const needsStock = totalConStock < 0;
 
                   return (
                     <React.Fragment key={semana.id}>
@@ -180,7 +182,7 @@ export const PrevisionNecesidades: React.FC<Props> = ({
                         )}
                       </td>
                       <td className={needsStock ? 'negative-stock' : 'positive-stock'}>
-                        {prevision.total || 0}
+                        {totalConStock}
                       </td>
                       <td className={ptePreparar > 0 ? 'needs-preparation' : ''}>
                         {ptePreparar > 0 ? ptePreparar : '-'}
@@ -214,10 +216,13 @@ export const PrevisionNecesidades: React.FC<Props> = ({
       <div className="prevision-legend">
         <h4>Leyenda:</h4>
         <ul>
-          <li><span className="legend-item negative">TOTAL negativo</span>: No se cubren las necesidades</li>
+          <li><strong>TOTAL</strong> = Stock Actual + Pte Pedido - (XSFAR1 + XSFAR)</li>
+          <li><span className="legend-item negative">TOTAL negativo</span>: No se cubren las necesidades (falta stock)</li>
           <li><span className="legend-item positive">TOTAL positivo</span>: Stock suficiente</li>
           <li><span className="legend-item preparation">PTE PREPARAR</span>: Cantidad que falta por preparar</li>
-          <li>Haz clic en las celdas para editar los valores</li>
+          <li>📦 <strong>Stock</strong>: Existencia actual del documento maestro</li>
+          <li>🔄 <strong>Pte Pedido</strong>: Unidades pendientes de recibir del documento maestro</li>
+          <li>Haz clic en las celdas XSFAR1 y XSFAR para editar los valores</li>
         </ul>
       </div>
     </div>
