@@ -199,6 +199,7 @@ export const useAppState = () => {
 
   return {
     state,
+    setState,
     addMedicamento,
     updateMedicamento,
     deleteMedicamento,
