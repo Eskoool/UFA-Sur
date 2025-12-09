@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Medicamento } from '../types';
+import type { Medicamento } from '../types';
 
 interface Props {
   medicamentos: Medicamento[];

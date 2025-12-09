@@ -1,4 +1,4 @@
-import { Medicamento, Semana } from '../types';
+import type { Medicamento, Semana } from '../types';
 
 export const initialMedicamentos: Medicamento[] = [
   {

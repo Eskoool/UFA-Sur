@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { AppState, Medicamento, Semana, PrevisionMedicamento, InventarioItem } from '../types';
+import type { AppState, Medicamento, Semana, InventarioItem } from '../types';
 import { initialMedicamentos, initialSemanas } from '../data/initialData';
 
 const STORAGE_KEY = 'ufa-sur-pharmacy-data';
