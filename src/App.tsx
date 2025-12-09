@@ -5,13 +5,16 @@ import { CatalogoMedicamentos } from './components/CatalogoMedicamentos';
 import { PrevisionNecesidades } from './components/PrevisionNecesidades';
 import { GestionInventario } from './components/GestionInventario';
 import { GoogleSheetsConfig } from './components/GoogleSheetsConfig';
+import { ImportarMaestro } from './components/ImportarMaestro';
+import { Historico } from './components/Historico';
 import './App.css';
 
-type TabType = 'catalogo' | 'prevision' | 'inventario';
+type TabType = 'catalogo' | 'prevision' | 'inventario' | 'historico';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('prevision');
   const [showGoogleSheetsConfig, setShowGoogleSheetsConfig] = useState(false);
+  const [showImportarMaestro, setShowImportarMaestro] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
@@ -29,6 +32,7 @@ function App() {
     resetData,
     exportData,
     importData,
+    importarMaestro,
   } = useAppState();
 
   const {
@@ -129,6 +133,16 @@ function App() {
             </>
           )}
 
+          {/* Documento Maestro */}
+          <div className="separator" />
+          <button
+            className="btn btn-warning btn-sm"
+            onClick={() => setShowImportarMaestro(true)}
+            title="Importar documento maestro (Excel/CSV)"
+          >
+            📥 Importar Maestro
+          </button>
+
           {/* Archivos JSON */}
           <div className="separator" />
           <button
@@ -187,6 +201,12 @@ function App() {
         >
           💊 Catálogo de Medicamentos
         </button>
+        <button
+          className={`nav-button ${activeTab === 'historico' ? 'active' : ''}`}
+          onClick={() => setActiveTab('historico')}
+        >
+          📋 Histórico
+        </button>
       </nav>
 
       <main className="app-main">
@@ -218,6 +238,8 @@ function App() {
             onUpdateInventario={updateInventario}
           />
         )}
+
+        {activeTab === 'historico' && <Historico historico={state.historico || []} />}
       </main>
 
       <footer className="app-footer">
@@ -226,6 +248,16 @@ function App() {
 
       {showGoogleSheetsConfig && (
         <GoogleSheetsConfig onClose={() => setShowGoogleSheetsConfig(false)} />
+      )}
+
+      {showImportarMaestro && (
+        <ImportarMaestro
+          onImportar={(medicamentos, historico) => {
+            importarMaestro(medicamentos, historico);
+            alert(`✅ Importados ${medicamentos.length} artículos del documento maestro`);
+          }}
+          onClose={() => setShowImportarMaestro(false)}
+        />
       )}
     </div>
   );
