@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useAppState } from './hooks/useAppState';
 import { CatalogoMedicamentos } from './components/CatalogoMedicamentos';
 import { PrevisionNecesidades } from './components/PrevisionNecesidades';
@@ -9,6 +9,7 @@ type TabType = 'catalogo' | 'prevision' | 'inventario';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('prevision');
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const {
     state,
     addMedicamento,
@@ -21,7 +22,25 @@ function App() {
     getInventarios,
     setSemanaActualIndex,
     resetData,
+    exportData,
+    importData,
   } = useAppState();
+
+  const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      try {
+        await importData(file);
+        alert('✅ Datos importados correctamente');
+      } catch (error) {
+        alert('❌ Error al importar datos: ' + (error as Error).message);
+      }
+      // Reset input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
 
   return (
     <div className="app">
@@ -31,6 +50,27 @@ function App() {
           <p className="subtitle">Sistema de Gestión de Medicamentos</p>
         </div>
         <div className="header-actions">
+          <button
+            className="btn btn-success btn-sm"
+            onClick={exportData}
+            title="Exportar base de datos a archivo JSON"
+          >
+            💾 Exportar DB
+          </button>
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={() => fileInputRef.current?.click()}
+            title="Importar base de datos desde archivo JSON"
+          >
+            📁 Importar DB
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json"
+            onChange={handleImport}
+            style={{ display: 'none' }}
+          />
           <button
             className="btn btn-danger btn-sm"
             onClick={() => {

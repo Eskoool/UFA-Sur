@@ -162,6 +162,41 @@ export const useAppState = () => {
     });
   };
 
+  const exportData = () => {
+    const dataStr = JSON.stringify(state, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `ufa-sur-database-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const importData = (file: File) => {
+    return new Promise<void>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const result = e.target?.result;
+          if (typeof result === 'string') {
+            const importedState = JSON.parse(result) as AppState;
+            setState(importedState);
+            resolve();
+          } else {
+            reject(new Error('Error al leer el archivo'));
+          }
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = () => reject(new Error('Error al leer el archivo'));
+      reader.readAsText(file);
+    });
+  };
+
   return {
     state,
     addMedicamento,
@@ -175,5 +210,7 @@ export const useAppState = () => {
     addSemana,
     setSemanaActualIndex,
     resetData,
+    exportData,
+    importData,
   };
 };
