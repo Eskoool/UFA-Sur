@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { AppState, Medicamento, Semana, InventarioItem } from '../types';
+import type { AppState, Medicamento, Semana, InventarioItem, HistoricoItem } from '../types';
 import { initialMedicamentos, initialSemanas } from '../data/initialData';
 
 const STORAGE_KEY = 'ufa-sur-pharmacy-data';
@@ -8,7 +8,12 @@ const getInitialState = (): AppState => {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored) {
     try {
-      return JSON.parse(stored);
+      const parsed = JSON.parse(stored);
+      // Asegurar que tenga el campo histórico
+      if (!parsed.historico) {
+        parsed.historico = [];
+      }
+      return parsed;
     } catch (error) {
       console.error('Error parsing stored data:', error);
     }
@@ -19,6 +24,7 @@ const getInitialState = (): AppState => {
     semanas: initialSemanas,
     previsiones: [],
     inventarios: [],
+    historico: [],
     semanaActualIndex: 0,
   };
 };
@@ -158,12 +164,69 @@ export const useAppState = () => {
       semanas: initialSemanas,
       previsiones: [],
       inventarios: [],
+      historico: [],
       semanaActualIndex: 0,
     });
   };
 
+  const exportData = () => {
+    const dataStr = JSON.stringify(state, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `ufa-sur-database-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const importData = (file: File) => {
+    return new Promise<void>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const result = e.target?.result;
+          if (typeof result === 'string') {
+            const importedState = JSON.parse(result) as AppState;
+            // Asegurar que tenga histórico
+            if (!importedState.historico) {
+              importedState.historico = [];
+            }
+            setState(importedState);
+            resolve();
+          } else {
+            reject(new Error('Error al leer el archivo'));
+          }
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = () => reject(new Error('Error al leer el archivo'));
+      reader.readAsText(file);
+    });
+  };
+
+  const importarMaestro = (medicamentos: Medicamento[], historico: HistoricoItem) => {
+    setState((prev) => ({
+      ...prev,
+      medicamentos,
+      historico: [historico, ...prev.historico],
+      ultimaImportacionMaestro: new Date().toISOString(),
+    }));
+  };
+
+  const addHistorico = (historico: HistoricoItem) => {
+    setState((prev) => ({
+      ...prev,
+      historico: [historico, ...prev.historico],
+    }));
+  };
+
   return {
     state,
+    setState,
     addMedicamento,
     updateMedicamento,
     deleteMedicamento,
@@ -175,5 +238,9 @@ export const useAppState = () => {
     addSemana,
     setSemanaActualIndex,
     resetData,
+    exportData,
+    importData,
+    importarMaestro,
+    addHistorico,
   };
 };
