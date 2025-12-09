@@ -1,0 +1,780 @@
+/* Reset y estilos base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #2563eb;
+  --secondary-color: #64748b;
+  --success-color: #10b981;
+  --danger-color: #ef4444;
+  --warning-color: #f59e0b;
+  --info-color: #06b6d4;
+  --bg-color: #f8fafc;
+  --surface-color: #ffffff;
+  --text-color: #1e293b;
+  --border-color: #e2e8f0;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.app-header {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  padding: 1.5rem 2rem;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* Navigation */
+.app-nav {
+  background: var(--surface-color);
+  border-bottom: 2px solid var(--border-color);
+  padding: 0 2rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--secondary-color);
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.nav-button:hover {
+  color: var(--primary-color);
+  background-color: rgba(37, 99, 235, 0.05);
+}
+
+.nav-button.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
+/* Main content */
+.app-main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Footer */
+.app-footer {
+  background: var(--surface-color);
+  border-top: 1px solid var(--border-color);
+  padding: 1rem 2rem;
+  text-align: center;
+  color: var(--secondary-color);
+  font-size: 0.875rem;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-success {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #059669;
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #475569;
+}
+
+.btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.btn-edit {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.btn-delete {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+/* Forms */
+.search-box {
+  margin-bottom: 1.5rem;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 500px;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--text-color);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 0.625rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.checkbox-group label {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: auto;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+/* Badges */
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.badge-info {
+  background-color: rgba(6, 182, 212, 0.1);
+  color: var(--info-color);
+}
+
+.badge-secondary {
+  background-color: rgba(100, 116, 139, 0.1);
+  color: var(--secondary-color);
+}
+
+.badge-success {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success-color);
+}
+
+.badge-warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--warning-color);
+}
+
+.badge-nevera {
+  background-color: rgba(6, 182, 212, 0.2);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+}
+
+/* Catálogo Medicamentos */
+.catalogo-medicamentos {
+  background: var(--surface-color);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.catalogo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.catalogo-header h2 {
+  color: var(--primary-color);
+}
+
+.medicamento-form {
+  background: var(--bg-color);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid var(--border-color);
+}
+
+.medicamento-form h3 {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.medicamentos-table-container {
+  overflow-x: auto;
+}
+
+.medicamentos-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.medicamentos-table th,
+.medicamentos-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.medicamentos-table th {
+  background-color: var(--bg-color);
+  font-weight: 600;
+  color: var(--text-color);
+  position: sticky;
+  top: 0;
+}
+
+.medicamentos-table tr:hover {
+  background-color: rgba(37, 99, 235, 0.02);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.catalogo-footer {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  color: var(--secondary-color);
+  font-size: 0.875rem;
+}
+
+/* Previsión Necesidades */
+.prevision-necesidades {
+  background: var(--surface-color);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.prevision-header {
+  margin-bottom: 1.5rem;
+}
+
+.prevision-header h2 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.semana-navigation {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--bg-color);
+  border-radius: 0.5rem;
+}
+
+.semana-info {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+}
+
+.prevision-table-container {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.prevision-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1200px;
+}
+
+.prevision-table th,
+.prevision-table td {
+  padding: 0.5rem;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  font-size: 0.85rem;
+}
+
+.prevision-table th {
+  background-color: var(--bg-color);
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.semana-header {
+  background-color: rgba(37, 99, 235, 0.1) !important;
+  color: var(--primary-color) !important;
+  font-weight: 700;
+}
+
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background: var(--surface-color);
+  z-index: 1;
+  text-align: left !important;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.prevision-table th.sticky-col {
+  background: var(--bg-color);
+  z-index: 2;
+}
+
+.editable-cell {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.editable-cell:hover {
+  background-color: rgba(37, 99, 235, 0.05);
+}
+
+.cell-input {
+  width: 100%;
+  padding: 0.25rem;
+  border: 2px solid var(--primary-color);
+  border-radius: 0.25rem;
+  text-align: center;
+}
+
+.checkbox-cell {
+  text-align: center;
+}
+
+.checkbox-cell input[type="checkbox"] {
+  cursor: pointer;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.negative-stock {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--danger-color);
+  font-weight: 600;
+}
+
+.positive-stock {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success-color);
+  font-weight: 600;
+}
+
+.needs-preparation {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--warning-color);
+  font-weight: 600;
+}
+
+.prevision-legend {
+  padding: 1rem;
+  background: var(--bg-color);
+  border-radius: 0.5rem;
+}
+
+.prevision-legend h4 {
+  margin-bottom: 0.75rem;
+  color: var(--text-color);
+}
+
+.prevision-legend ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.prevision-legend li {
+  font-size: 0.875rem;
+}
+
+.legend-item {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-weight: 600;
+}
+
+.legend-item.negative {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--danger-color);
+}
+
+.legend-item.positive {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success-color);
+}
+
+.legend-item.preparation {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--warning-color);
+}
+
+/* Gestión Inventario */
+.gestion-inventario {
+  background: var(--surface-color);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.inventario-header h2 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.inventario-info {
+  color: var(--secondary-color);
+  margin-bottom: 1.5rem;
+}
+
+.inventario-grid {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.medicamentos-list h3 {
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.medicamentos-scroll {
+  max-height: 600px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.medicamento-item {
+  padding: 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.medicamento-item:hover {
+  border-color: var(--primary-color);
+  background-color: rgba(37, 99, 235, 0.02);
+}
+
+.medicamento-item.selected {
+  border-color: var(--primary-color);
+  background-color: rgba(37, 99, 235, 0.05);
+}
+
+.medicamento-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 0.5rem;
+}
+
+.medicamento-item-header strong {
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.medicamento-item-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--secondary-color);
+  margin-bottom: 0.5rem;
+}
+
+.last-inventario {
+  font-size: 0.75rem;
+  color: var(--secondary-color);
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+}
+
+.inventario-details {
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  background: var(--bg-color);
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.details-header h3 {
+  color: var(--primary-color);
+}
+
+.inventario-form {
+  background: var(--surface-color);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid var(--border-color);
+}
+
+.inventario-form h4 {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.diferencia-preview {
+  background: var(--bg-color);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.diferencia-preview strong {
+  margin-right: 0.5rem;
+}
+
+.diferencia-info {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.diff-positive {
+  color: var(--success-color);
+  font-weight: 600;
+}
+
+.diff-negative {
+  color: var(--danger-color);
+  font-weight: 600;
+}
+
+.diff-zero {
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+.inventarios-history h4 {
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.inventarios-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.inventarios-table th,
+.inventarios-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.inventarios-table th {
+  background-color: var(--bg-color);
+  font-weight: 600;
+}
+
+.inventarios-table tr:hover {
+  background-color: rgba(37, 99, 235, 0.02);
+}
+
+.notas-cell {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--secondary-color);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .inventario-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .medicamentos-scroll {
+    max-height: 300px;
+  }
+
+  .prevision-table {
+    font-size: 0.75rem;
+  }
+
+  .prevision-table th,
+  .prevision-table td {
+    padding: 0.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .header-content h1 {
+    font-size: 1.25rem;
+  }
+
+  .app-nav {
+    padding: 0 1rem;
+    overflow-x: auto;
+  }
+
+  .nav-button {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  .app-main {
+    padding: 1rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .catalogo-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+}
