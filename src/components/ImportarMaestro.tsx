@@ -69,7 +69,7 @@ export const ImportarMaestro: React.FC<ImportarMaestroProps> = ({ onImportar, on
           {/* Instrucciones */}
           <div className="alert alert-info">
             <h4>📋 Formato del Archivo</h4>
-            <p>El archivo debe ser un <strong>CSV</strong> con los siguientes campos:</p>
+            <p>El archivo puede ser <strong>CSV, Excel o ODT</strong> con los siguientes campos:</p>
             <ul>
               <li><code>cod_articulo</code> - Código del artículo (requerido)</li>
               <li><code>denominaci</code> - Denominación (requerido)</li>
@@ -77,7 +77,7 @@ export const ImportarMaestro: React.FC<ImportarMaestroProps> = ({ onImportar, on
               <li><code>ud_pte_cons</code> - Unidades pendientes (pedido)</li>
               <li>Y otros campos opcionales...</li>
             </ul>
-            <p><strong>Separadores admitidos:</strong> coma (,), punto y coma (;) o tabulador</p>
+            <p><strong>Formatos admitidos:</strong> .csv, .xlsx, .xls, .ods, .odt</p>
           </div>
 
           {/* Selector de archivo */}
@@ -85,7 +85,7 @@ export const ImportarMaestro: React.FC<ImportarMaestroProps> = ({ onImportar, on
             <input
               ref={fileInputRef}
               type="file"
-              accept=".csv,.txt"
+              accept=".csv,.txt,.xlsx,.xls,.ods,.odt"
               onChange={handleFileChange}
               style={{ display: 'none' }}
             />
@@ -102,8 +102,8 @@ export const ImportarMaestro: React.FC<ImportarMaestroProps> = ({ onImportar, on
               ) : (
                 <div className="upload-placeholder">
                   <span className="upload-icon">📁</span>
-                  <p>Haz clic para seleccionar archivo CSV</p>
-                  <p className="text-muted">o arrastra y suelta aquí</p>
+                  <p>Haz clic para seleccionar archivo</p>
+                  <p className="text-muted">CSV, Excel (.xlsx, .xls) u ODT (.ods, .odt)</p>
                 </div>
               )}
             </div>

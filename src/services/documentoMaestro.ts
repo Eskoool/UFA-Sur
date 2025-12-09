@@ -3,6 +3,7 @@
  * Soporta archivos CSV, Excel (.xlsx, .xls) y ODT
  */
 
+import * as XLSX from 'xlsx';
 import type { DocumentoMaestro, Medicamento, HistoricoItem } from '../types';
 
 /**
@@ -27,6 +28,35 @@ function parseCSV(text: string): any[] {
   }
 
   return rows;
+}
+
+/**
+ * Parsear archivo Excel u ODT usando XLSX
+ */
+async function parseExcel(file: File): Promise<any[]> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      try {
+        const data = e.target?.result;
+        const workbook = XLSX.read(data, { type: 'binary' });
+
+        // Obtener la primera hoja
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+
+        // Convertir a JSON
+        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+        resolve(jsonData);
+      } catch (error) {
+        reject(error);
+      }
+    };
+
+    reader.onerror = () => reject(new Error('Error al leer el archivo'));
+    reader.readAsBinaryString(file);
+  });
 }
 
 /**
@@ -91,16 +121,18 @@ export async function procesarDocumentoMaestro(file: File): Promise<{
   const errores: string[] = [];
 
   try {
-    const text = await file.text();
     const extension = file.name.split('.').pop()?.toLowerCase();
-
     let rows: any[] = [];
 
     // Procesar según el tipo de archivo
     if (extension === 'csv' || extension === 'txt') {
+      const text = await file.text();
       rows = parseCSV(text);
+    } else if (extension === 'xlsx' || extension === 'xls' || extension === 'ods' || extension === 'odt') {
+      // Usar XLSX para Excel y ODT
+      rows = await parseExcel(file);
     } else {
-      errores.push(`Tipo de archivo no soportado: ${extension}. Por favor, exporta a CSV.`);
+      errores.push(`Tipo de archivo no soportado: ${extension}. Formatos admitidos: CSV, Excel (.xlsx, .xls), ODT (.ods, .odt)`);
       return { medicamentos: [], documentos: [], errores };
     }
 
